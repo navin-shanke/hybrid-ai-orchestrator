@@ -19,6 +19,8 @@
   - `ErrorCodes` enum covering all system error categories
   - `DateTime` utility for UTC date/time operations
   - `Validation` utility for input sanitization and validation
+### Fixed
+- ESM module resolution for `IdGenerator` import in `UniqueEntityID.ts`
 
 ---
 

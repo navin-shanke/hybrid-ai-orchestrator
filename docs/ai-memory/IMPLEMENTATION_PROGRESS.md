@@ -42,7 +42,7 @@
 ---
 
 ## 3. Completed Tasks Archive
-- **SK-1.1**: Entity base class with UniqueEntityID identity (`shared/domain/Entity.ts`, `shared/domain/UniqueEntityID.ts`)
+- **SK-1.1**: Entity base class with UniqueEntityID identity (`shared/domain/Entity.ts`, `shared/domain/UniqueEntityID.ts`, `shared/domain/IdGenerator.ts`)
 - **SK-1.2**: ValueObject base class with structural equality (`shared/domain/ValueObject.ts`)
 - **SK-1.3**: Monadic Result<T, E> type with Ok/Err constructors (`shared/domain/Result.ts`)
 - **SK-1.4**: BaseException class with error codes and serialization (`shared/exceptions/BaseException.ts`, `shared/exceptions/ErrorCodes.ts`)
