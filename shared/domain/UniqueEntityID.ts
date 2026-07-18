@@ -1,8 +1,10 @@
+import { getDefaultIdGenerator } from './IdGenerator.js';
+
 export class UniqueEntityID {
   private readonly _value: string;
 
-  constructor(value?: string) {
-    this._value = value ?? crypto.randomUUID();
+  constructor(value?: string, private readonly idGenerator = getDefaultIdGenerator()) {
+    this._value = value ?? idGenerator.generate();
   }
 
   get value(): string {
