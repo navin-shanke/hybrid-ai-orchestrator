@@ -17,10 +17,10 @@ export class OkImpl<T, E> {
     return fn(this.value);
   }
   mapErr<F>(_fn: (error: E) => F): Result<T, F> {
-    return ok(this.value) as any;
+    return ok(this.value) as unknown as Result<T, F>;
   }
   flatMapErr<F>(_fn: (error: E) => Result<T, F>): Result<T, F> {
-    return ok(this.value) as any;
+    return ok(this.value) as unknown as Result<T, F>;
   }
 
   match<U>(handlers: { ok: (value: T) => U; err: (error: E) => U }): U {
@@ -43,10 +43,10 @@ export class ErrImpl<T, E> {
   unwrapOr<T>(defaultValue: T): T { return defaultValue; }
 
   map<U>(_fn: (value: T) => U): Result<U, E> {
-    return err(this.error) as any;
+    return err(this.error) as unknown as Result<U, E>;
   }
   flatMap<U>(_fn: (value: T) => Result<U, E>): Result<U, E> {
-    return err(this.error) as any;
+    return err(this.error) as unknown as Result<U, E>;
   }
   mapErr<F>(fn: (error: E) => F): Result<T, F> {
     return err(fn(this.error));
