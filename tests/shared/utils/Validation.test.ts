@@ -1,0 +1,72 @@
+import { Validation } from '../../../shared/utils/Validation';
+
+describe('Validation', () => {
+  describe('isNonEmptyString', () => {
+    it('returns true for non-empty string', () => {
+      expect(Validation.isNonEmptyString('hello')).toBe(true);
+    });
+    it('returns false for empty string', () => {
+      expect(Validation.isNonEmptyString('')).toBe(false);
+    });
+    it('returns false for whitespace only', () => {
+      expect(Validation.isNonEmptyString('   ')).toBe(false);
+    });
+    it('returns false for null/undefined', () => {
+      expect(Validation.isNonEmptyString(null as any)).toBe(false);
+      expect(Validation.isNonEmptyString(undefined as any)).toBe(false);
+    });
+  });
+
+  describe('isValidUUID', () => {
+    it('returns true for valid UUID v4', () => {
+      expect(Validation.isValidUUID('550e8400-e29b-41d4-a716-446655440000')).toBe(true);
+    });
+    it('returns false for invalid format', () => {
+      expect(Validation.isValidUUID('not-a-uuid')).toBe(false);
+      expect(Validation.isValidUUID('')).toBe(false);
+    });
+  });
+
+  describe('isValidEmail', () => {
+    it('returns true for valid email', () => {
+      expect(Validation.isValidEmail('user@example.com')).toBe(true);
+    });
+    it('returns false for invalid email', () => {
+      expect(Validation.isValidEmail('invalid')).toBe(false);
+      expect(Validation.isValidEmail('@example.com')).toBe(false);
+    });
+  });
+
+  describe('isPositiveInteger', () => {
+    it('returns true for positive integers', () => {
+      expect(Validation.isPositiveInteger(1)).toBe(true);
+      expect(Validation.isPositiveInteger(100)).toBe(true);
+    });
+    it('returns false for zero, negative, non-integers', () => {
+      expect(Validation.isPositiveInteger(0)).toBe(false);
+      expect(Validation.isPositiveInteger(-1)).toBe(false);
+      expect(Validation.isPositiveInteger(1.5)).toBe(false);
+    });
+  });
+
+  describe('isWithinRange', () => {
+    it('returns true when value in range', () => {
+      expect(Validation.isWithinRange(5, 1, 10)).toBe(true);
+      expect(Validation.isWithinRange(1, 1, 10)).toBe(true);
+      expect(Validation.isWithinRange(10, 1, 10)).toBe(true);
+    });
+    it('returns false when out of range', () => {
+      expect(Validation.isWithinRange(0, 1, 10)).toBe(false);
+      expect(Validation.isWithinRange(11, 1, 10)).toBe(false);
+    });
+  });
+
+  describe('sanitizeString', () => {
+    it('trims and removes control characters', () => {
+      expect(Validation.sanitizeString('  hello\x00world  ')).toBe('hello world');
+    });
+    it('limits length', () => {
+      expect(Validation.sanitizeString('abcdef', 3)).toBe('abc');
+    });
+  });
+});
