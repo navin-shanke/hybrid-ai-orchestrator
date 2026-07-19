@@ -40,6 +40,11 @@ export interface IConfigurationManager {
   getVersion(): Promise<Result<{ version: number; activatedAt: Date }, Error>>;
 
   /**
+   * Gets resolved configuration for a specific namespace with full context resolution.
+   */
+  resolveConfiguration(namespace: string, context: ConfigurationContext): Promise<Result<Record<string, unknown>, Error>>;
+
+  /**
    * Validates a candidate configuration without activating it.
    */
   validate(candidateConfig: Record<string, unknown>): Promise<Result<{ valid: boolean; errors: string[] }, Error>>;

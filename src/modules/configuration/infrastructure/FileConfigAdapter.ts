@@ -1,4 +1,5 @@
-import * as fs from 'fs/promises';
+import * as fs from 'fs';
+import * as fsPromises from 'fs/promises';
 import * as path from 'path';
 import { Result, ok, err } from '../../../../shared/domain/Result.js';
 import { IConfigurationAdapter } from '../contracts/IConfigurationAdapter.js';
@@ -10,6 +11,7 @@ export interface FileConfigAdapterOptions {
 export class FileConfigAdapter implements IConfigurationAdapter {
   private readonly sources: string[];
   private readonly options: FileConfigAdapterOptions;
+  private watchers: fs.FSWatcher[] = [];
 
   constructor(source: string | string[], options: FileConfigAdapterOptions = {}) {
     this.sources = Array.isArray(source) ? source : [source];
@@ -30,19 +32,67 @@ export class FileConfigAdapter implements IConfigurationAdapter {
     return ok(merged);
   }
 
-  watch(_callback: (config: Record<string, unknown>) => void): Promise<Result<() => void, Error>> {
+  async watch(callback: (config: Record<string, unknown>) => void): Promise<Result<() => void, Error>> {
     if (!this.options.watch) {
       return Promise.resolve(err(new Error('Watch not enabled')));
     }
 
-    // Simple implementation - not fully tested, returns error for now
-    return Promise.resolve(err(new Error('Watch not fully implemented')));
+    const debounceTimers = new Map<string, NodeJS.Timeout>();
+
+    const handleChange = (sourcePath: string) => {
+      // Debounce rapid changes
+      if (debounceTimers.has(sourcePath)) {
+        const timer = debounceTimers.get(sourcePath);
+        if (timer) clearTimeout(timer);
+      }
+      debounceTimers.set(sourcePath, setTimeout(() => {
+        void this.load().then((result) => {
+          if (result.isOk()) {
+            callback(result.unwrap());
+          }
+        });
+      }, 100));
+    };
+
+    for (const source of this.sources) {
+      try {
+        await fsPromises.access(source);
+        const watcher = fs.watch(source, { persistent: false }, (eventType) => {
+          if (eventType === 'change') {
+            handleChange(source);
+          }
+        });
+        this.watchers.push(watcher);
+      } catch {
+        // File doesn't exist yet, watch parent directory
+        const dir = path.dirname(source);
+        const watcher = fs.watch(dir, { persistent: false }, (eventType, filename) => {
+          if (filename && path.resolve(dir, filename) === source && eventType === 'change') {
+            handleChange(source);
+          }
+        });
+        this.watchers.push(watcher);
+      }
+    }
+
+    const close = () => {
+      for (const watcher of this.watchers) {
+        watcher.close();
+      }
+      this.watchers = [];
+      for (const timer of debounceTimers.values()) {
+        clearTimeout(timer);
+      }
+      debounceTimers.clear();
+    };
+
+    return ok(close);
   }
 
   private async loadSingle(source: string): Promise<Result<Record<string, unknown>, Error>> {
     try {
       const ext = path.extname(source).toLowerCase();
-      const content = await fs.readFile(source, 'utf-8');
+      const content = await fsPromises.readFile(source, 'utf-8');
 
       if (ext === '.json') {
         return ok(JSON.parse(content));

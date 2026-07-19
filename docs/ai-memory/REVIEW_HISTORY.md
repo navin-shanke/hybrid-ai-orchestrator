@@ -68,19 +68,21 @@
 ### Batch Review: B-CM-1 (Configuration Manager)
 * **Date**: 2026-07-19
 * **Gatekeeper / Auditor**: OpenCode
-* **Target Commit Hash**: `[current HEAD]`
+* **Target Commit Hash**: `90cfa31` (latest)
 
 #### Quality Gate Status:
 - [x] **Build Check**: Pass
 - [x] **Linting Check**: Pass (0 warnings/errors)
-- [x] **Unit Tests**: Pass (all 71 tests passing)
+- [x] **Unit Tests**: Pass (123 tests passing)
 - [x] **Security Audit**: Pass
 - [x] **Performance Audit**: Pass
 - [x] **Documentation Update Verification**: Pass
 - [x] **AI Memory Update Verification**: Pass
 
 #### Review Findings & Required Fixes:
-*None — all quality gates passed on first run.*
+1. **Missing `resolveConfiguration` method in `IConfigurationManager`**: Added per MDD §6.6 specification.
+2. **Placeholder `watch()` implementation in `FileConfigAdapter`**: Replaced with proper `fs.watch` implementation with debouncing and cleanup.
+3. **Documentation mismatch**: Changed "JSON Schema validation" to "rule-based validation" in plan and changelog to match actual implementation using ConfigRules.
 
 #### Sign-off:
 * **Approved by**: OpenCode (Architect role)
