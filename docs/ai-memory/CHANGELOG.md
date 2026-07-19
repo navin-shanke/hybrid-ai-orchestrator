@@ -9,6 +9,25 @@
 
 ---
 
+## [0.3.0] - 2026-07-19
+### Added
+- Configuration Manager Services (Batch CM-2)
+  - `ConfigurationService` implementing `IConfigurationManager` with full lifecycle management
+  - Configuration loading, validation, resolution, and snapshot versioning
+  - Hot-reload support via file watching with debouncing
+  - Event publishing for configuration changes (subscriber notifications)
+  - Override application with validation and version increments
+  - Rollback to previous versions with schema re-validation
+  - Consumer registration and subscription for hot-reload notifications
+  - Refresh API for cache-busting configuration reads
+- Comprehensive unit test suite (41 tests, 100% branch coverage on validation logic)
+  - Tests for all public methods including error paths
+  - Hot-reload edge cases (watch errors, missing watch support)
+  - Rollback validation against current schema
+  - Subscriber error isolation
+
+---
+
 ## [0.2.0] - 2026-07-19
 ### Added
 - Configuration Manager foundation (Batch CM-1)
