@@ -249,7 +249,7 @@ export class ConfigurationService implements IConfigurationManager {
     });
 
     if (watchResult.isErr()) {
-      (this.logger.warn as (msg: string, ctx: Record<string, unknown>) => void)('Hot reload setup failed', { error: watchResult.error.message });
+      this.logger.warn('Hot reload setup failed', { error: watchResult.error.message });
     }
   }
 
@@ -275,7 +275,7 @@ export class ConfigurationService implements IConfigurationManager {
       try {
         subscription.callback(snapshot);
       } catch (error) {
-        (this.logger.error as (msg: string, ctx: Record<string, unknown>, err: Error) => void)(
+        this.logger.error(
           'Failed to notify subscriber',
           { consumerId: subscription.consumerId },
           error instanceof Error ? error : new Error(String(error))

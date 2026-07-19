@@ -16,24 +16,24 @@ export class LoggerService implements ILogger {
 
   constructor(adapter: ILoggerAdapter, options: { level?: LogLevel; name?: string } = {}) {
     this.adapter = adapter;
-    this.level = options.level ?? 1; // INFO
+    this.level = options.level ?? LogLevel.INFO;
     this.name = options.name;
   }
 
   debug(message: string, context?: Record<string, unknown>): void {
-    this.log(0, message, context);
+    this.log(LogLevel.DEBUG, message, context);
   }
 
   info(message: string, context?: Record<string, unknown>): void {
-    this.log(1, message, context);
+    this.log(LogLevel.INFO, message, context);
   }
 
   warn(message: string, context?: Record<string, unknown>): void {
-    this.log(2, message, context);
+    this.log(LogLevel.WARN, message, context);
   }
 
-  error(message: string, context?: Record<string, unknown>, error?: Error): void {
-    this.log(3, message, context, error);
+  error(message: string, context?: Record<string, unknown>, error?: unknown): void {
+    this.log(LogLevel.ERROR, message, context, error);
   }
 
   setLevel(level: LogLevel): void {
@@ -46,6 +46,9 @@ export class LoggerService implements ILogger {
 
   child(bindings: Record<string, unknown>): ILogger {
     const childLogger = new LoggerService(this.adapter, { level: this.level });
+    // Child gets a snapshot of parent state at creation time.
+    // Parent mutations after creation are NOT inherited by existing children.
+    // This is intentional for predictable log context isolation.
     childLogger.globalContext = { ...this.globalContext };
     childLogger.bindings = { ...this.bindings, ...bindings };
     childLogger.name = this.name;
@@ -54,6 +57,14 @@ export class LoggerService implements ILogger {
 
   setGlobalContext(context: Record<string, unknown>): void {
     this.globalContext = { ...this.globalContext, ...context };
+  }
+
+  replaceGlobalContext(context: Record<string, unknown>): void {
+    this.globalContext = { ...context };
+  }
+
+  clearGlobalContext(): void {
+    this.globalContext = {};
   }
 
   private log(level: LogLevel, message: string, context?: Record<string, unknown>, error?: unknown): void {
