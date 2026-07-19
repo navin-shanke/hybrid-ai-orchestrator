@@ -240,7 +240,7 @@ export class ConfigurationService implements IConfigurationManager {
 
   private async setupHotReload(): Promise<void> {
     if (!this.adapter.watch) {
-      (this.logger.warn as (msg: string) => void)('Hot reload not supported by adapter');
+      this.logger.warn('Hot reload not supported by adapter');
       return;
     }
 
