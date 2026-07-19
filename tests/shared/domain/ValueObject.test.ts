@@ -40,6 +40,41 @@ describe('ValueObject', () => {
     expect(person1.equals(person2)).toBe(true);
   });
 
+  it('returns false when one side has nested VO and other does not', () => {
+    class Person extends ValueObject<{ name: string; address: Address }> {
+      get name(): string { return this.props.name; }
+      get address(): Address { return this.props.address; }
+    }
+    const person1 = new Person({ name: 'John', address: new Address({ street: '123 Main', city: 'NYC', zip: '10001' }) });
+    const person2 = new Person({ name: 'John', address: { street: '123 Main', city: 'NYC', zip: '10001' } as any });
+    expect(person1.equals(person2)).toBe(false);
+  });
+
+  it('returns false when keys length differs', () => {
+    const addr1 = new Address({ street: '123 Main St', city: 'NYC', zip: '10001' });
+    const addr2 = new Address({ street: '123 Main St', city: 'NYC', zip: '10001', extra: 'field' } as any);
+    expect(addr1.equals(addr2)).toBe(false);
+  });
+
+  it('returns false when nested VO comparison returns false', () => {
+    class Person extends ValueObject<{ name: string; address: Address }> {
+      get name(): string { return this.props.name; }
+      get address(): Address { return this.props.address; }
+    }
+    const person1 = new Person({ name: 'John', address: new Address({ street: '123 Main', city: 'NYC', zip: '10001' }) });
+    const person2 = new Person({ name: 'John', address: new Address({ street: '456 Other', city: 'LA', zip: '90001' }) });
+    expect(person1.equals(person2)).toBe(false);
+  });
+
+  it('handles primitives vs ValueObject in nested comparison', () => {
+    class Container extends ValueObject<{ value: Address | string }> {
+      get value(): Address | string { return this.props.value; }
+    }
+    const c1 = new Container({ value: new Address({ street: '123 Main', city: 'NYC', zip: '10001' }) });
+    const c2 = new Container({ value: 'not an address' });
+    expect(c1.equals(c2)).toBe(false);
+  });
+
   it('freezes props to prevent mutation', () => {
     const props = { street: '123 Main', city: 'NYC', zip: '10001' };
     const addr = new Address(props);

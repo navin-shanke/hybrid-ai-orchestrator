@@ -25,6 +25,12 @@ describe('Validation', () => {
       expect(Validation.isValidUUID('not-a-uuid')).toBe(false);
       expect(Validation.isValidUUID('')).toBe(false);
     });
+    it('returns false for non-string values', () => {
+      expect(Validation.isValidUUID(null as any)).toBe(false);
+      expect(Validation.isValidUUID(undefined as any)).toBe(false);
+      expect(Validation.isValidUUID(123 as any)).toBe(false);
+      expect(Validation.isValidUUID({} as any)).toBe(false);
+    });
   });
 
   describe('isValidEmail', () => {
@@ -34,6 +40,12 @@ describe('Validation', () => {
     it('returns false for invalid email', () => {
       expect(Validation.isValidEmail('invalid')).toBe(false);
       expect(Validation.isValidEmail('@example.com')).toBe(false);
+    });
+    it('returns false for non-string values', () => {
+      expect(Validation.isValidEmail(null as any)).toBe(false);
+      expect(Validation.isValidEmail(undefined as any)).toBe(false);
+      expect(Validation.isValidEmail(123 as any)).toBe(false);
+      expect(Validation.isValidEmail({} as any)).toBe(false);
     });
   });
 
@@ -46,6 +58,12 @@ describe('Validation', () => {
       expect(Validation.isPositiveInteger(0)).toBe(false);
       expect(Validation.isPositiveInteger(-1)).toBe(false);
       expect(Validation.isPositiveInteger(1.5)).toBe(false);
+    });
+    it('returns false for non-number values', () => {
+      expect(Validation.isPositiveInteger('1' as any)).toBe(false);
+      expect(Validation.isPositiveInteger(null as any)).toBe(false);
+      expect(Validation.isPositiveInteger(undefined as any)).toBe(false);
+      expect(Validation.isPositiveInteger({} as any)).toBe(false);
     });
   });
 
@@ -66,6 +84,21 @@ describe('Validation', () => {
       expect(Validation.sanitizeString('  hello\x00world  ')).toBe('hello world');
     });
     it('limits length', () => {
+      expect(Validation.sanitizeString('abcdef', 3)).toBe('abc');
+    });
+    it('handles string without maxLength', () => {
+      expect(Validation.sanitizeString('  hello  ')).toBe('hello');
+    });
+    it('handles string with only control characters', () => {
+      expect(Validation.sanitizeString('\x00\x01\x02')).toBe('');
+    });
+    it('handles string with no control characters', () => {
+      expect(Validation.sanitizeString('hello world')).toBe('hello world');
+    });
+    it('handles exact maxLength', () => {
+      expect(Validation.sanitizeString('abc', 3)).toBe('abc');
+    });
+    it('handles maxLength less than string length', () => {
       expect(Validation.sanitizeString('abcdef', 3)).toBe('abc');
     });
   });

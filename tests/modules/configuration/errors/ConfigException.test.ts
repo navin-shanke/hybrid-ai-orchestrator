@@ -65,7 +65,7 @@ describe('ConfigErrorCodes', () => {
     expect(ConfigErrorCodes.UNKNOWN_CONFIG_ERROR).toBe('UNKNOWN_CONFIG_ERROR');
   });
 
-  it('has exactly 11 error codes', () => {
-    expect(Object.keys(ConfigErrorCodes).length).toBe(11);
+  it('has exactly 12 error codes', () => {
+    expect(Object.keys(ConfigErrorCodes).length).toBe(12);
   });
 });
