@@ -7,30 +7,18 @@
 ## 1. Upcoming Sprint Queue
 
 ### Queue Position 1: Configuration Manager (Seq 1)
-* **Sprint Phase**: Phase 1-4 (Contracts, Domain, Adapters)
-* **Target Batch**: Batch 1
-* **Tasks**:
-  1. CM-1.1: Create IConfigurationManager.ts interface
-  2. CM-1.2: Create ConfigRules.ts validation logic
-  3. CM-1.3: Create ConfigException.ts extending BaseException
-  4. CM-1.4: Create FileConfigAdapter.ts reading JSON/.env
-  5. CM-1.5: Create ConfigValidator.ts with JSON Schema validation
-
----
-
-### Queue Position 2: Configuration Manager (Seq 1)
 * **Sprint Phase**: Phase 5-10 (Services, Events, Tests)
 * **Target Batch**: Batch 2
 * **Tasks**:
-  1. Implement Configuration Service (`services/ConfigurationService.ts`).
-  2. Integrate configuration reloading logic and bind events.
-  3. Create configuration unit tests (`tests/Configuration.test.ts`).
-  4. Perform integration checks.
-  5. Update living memory documentation.
+  1. CM-2.1: Implement Configuration Service (`services/ConfigurationService.ts`).
+  2. CM-2.2: Integrate configuration reloading logic and bind events.
+  3. CM-2.3: Create configuration unit tests (`tests/Configuration.test.ts`).
+  4. CM-2.4: Perform integration checks.
+  5. CM-2.5: Update living memory documentation.
 
 ---
 
-### Queue Position 3: Logger Module (Seq 2)
+### Queue Position 2: Logger Module (Seq 2)
 * **Sprint Phase**: Phase 1-10 (Contracts, Services, Output Adapters)
 * **Target Batch**: Batch 1
 * **Tasks**:
@@ -44,6 +32,7 @@
 
 ## 2. Dependencies Resolved
 - ✅ Shared Kernel (Entity, ValueObject, Result, BaseException, ErrorCodes, DateTime, Validation)
+- ✅ Configuration Manager Batch 1 (Contracts, Domain, Adapters)
 
 ---
 

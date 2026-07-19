@@ -6,8 +6,8 @@
 
 ## 1. Active Sprint Scope
 * **Target Module**: Configuration Manager (Seq 1)  
-* **Sprint Phase**: Phase 1-4 (Contracts, Domains, and Adapters)  
-* **Active Batch**: Batch 1  
+* **Sprint Phase**: Phase 5-10 (Services and Integration)  
+* **Active Batch**: Batch 2  
 
 ---
 
@@ -15,11 +15,11 @@
 
 | Task ID | Task Description | Target File | Status | Pre-requisite |
 | --- | --- | --- | --- | --- |
-| **CM-1.1** | Create Configuration Manager Interface `IConfigurationManager.ts` | `src/modules/configuration/contracts/IConfigurationManager.ts` | ⬜ Pending | Shared Kernel |
-| **CM-1.2** | Create Config Validation Rules `ConfigRules.ts` | `src/modules/configuration/domain/ConfigRules.ts` | ⬜ Pending | Shared Kernel |
-| **CM-1.3** | Create Config Exceptions `ConfigException.ts` | `src/modules/configuration/errors/ConfigException.ts` | ⬜ Pending | Shared Kernel |
-| **CM-1.4** | Create File Config Adapter `FileConfigAdapter.ts` | `src/modules/configuration/infrastructure/FileConfigAdapter.ts` | ⬜ Pending | Shared Kernel |
-| **CM-1.5** | Implement Default Config Validation Logic | `src/modules/configuration/domain/ConfigValidator.ts` | ⬜ Pending | Shared Kernel |
+| **CM-2.1** | Create Configuration Service `ConfigurationService.ts` | `src/modules/configuration/services/ConfigurationService.ts` | ⬜ Pending | Batch 1 |
+| **CM-2.2** | Integrate hot-reload and event publishing | `src/modules/configuration/services/ConfigurationService.ts` | ⬜ Pending | Batch 1 |
+| **CM-2.3** | Create unit tests `Configuration.test.ts` | `tests/modules/configuration/Configuration.test.ts` | ⬜ Pending | Batch 1 |
+| **CM-2.4** | Perform integration runs | N/A | ⬜ Pending | Batch 1 |
+| **CM-2.5** | Documentation audit and review logs | `docs/ai-memory/REVIEW_HISTORY.md` | ⬜ Pending | Batch 1 |
 
 ---
 

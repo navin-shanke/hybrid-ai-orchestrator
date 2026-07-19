@@ -9,6 +9,17 @@
 
 ---
 
+## [0.2.0] - 2026-07-19
+### Added
+- Configuration Manager foundation (Batch CM-1)
+  - `IConfigurationManager` interface with 11 methods
+  - `ConfigRules` validation logic (log levels, retention, feature flags, providers, routing)
+  - `ConfigException` with 11 config-specific error codes
+  - `FileConfigAdapter` for JSON and .env file loading
+  - `ConfigValidator` with structured error reporting
+
+---
+
 ## [0.1.0] - 2026-07-19
 ### Added
 - Shared Kernel foundation (Batch SK-1)
