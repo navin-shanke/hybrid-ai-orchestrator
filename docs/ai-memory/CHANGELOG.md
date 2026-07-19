@@ -12,11 +12,11 @@
 ## [0.2.0] - 2026-07-19
 ### Added
 - Configuration Manager foundation (Batch CM-1)
-  - `IConfigurationManager` interface with 11 methods
+  - `IConfigurationManager` interface with 12 methods (incl. `resolveConfiguration`)
   - `ConfigRules` validation logic (log levels, retention, feature flags, providers, routing)
   - `ConfigException` with 11 config-specific error codes
-  - `FileConfigAdapter` for JSON and .env file loading
-  - `ConfigValidator` with structured error reporting
+  - `FileConfigAdapter` for JSON/.env file loading with proper file watching
+  - `ConfigValidator` with structured error reporting (rule-based validation)
 
 ---
 
