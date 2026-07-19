@@ -8,6 +8,10 @@ export interface SubscriberInfo {
 }
 
 export class SubscriberRegistry {
+  // Note: This implementation uses Map/Set for pattern matching.
+  // The MDD mentions a "trie/prefix-index structure" - this implementation
+  // uses Map/Set with linear scan over pattern keys. For small-to-medium
+  // scale this is efficient; for high cardinality a true trie would be better.
   private readonly subscriptions: Map<string, Subscription> = new Map();
   private readonly subscriberIndex: Map<string, SubscriberInfo> = new Map();
   private readonly topicIndex: Map<string, Set<string>> = new Map();

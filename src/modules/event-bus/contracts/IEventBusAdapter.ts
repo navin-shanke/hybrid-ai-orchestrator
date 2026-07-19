@@ -1,6 +1,3 @@
-import { Event } from '../domain/entities/Event.js';
-import { Result, ok, err } from '@shared/domain/Result.js';
-
 export interface LogEntry {
   timestamp: string;
   level: 'DEBUG' | 'INFO' | 'WARN' | 'ERROR';
@@ -14,6 +11,6 @@ export interface LogEntry {
   loggerName?: string;
 }
 
-export interface ILoggerAdapter {
+export interface IEventBusAdapter {
   write(entry: LogEntry): void;
 }
