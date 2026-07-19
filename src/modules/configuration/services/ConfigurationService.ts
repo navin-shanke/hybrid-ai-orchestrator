@@ -1,9 +1,11 @@
-import { Result, ok, err } from '../../../../shared/domain/Result.js';
+import { Result, ok, err } from '@shared/domain/Result.js';
 import { IConfigurationManager, ConfigurationSnapshot, ConfigurationContext } from '../contracts/IConfigurationManager.js';
 import { IConfigurationAdapter } from '../contracts/IConfigurationAdapter.js';
 import { ConfigValidator } from '../domain/ConfigValidator.js';
 import { ConfigException, ConfigErrorCodes } from '../errors/ConfigException.js';
 import { FileConfigAdapter } from '../infrastructure/FileConfigAdapter.js';
+import { ILogger } from '@src/modules/logger/contracts/ILogger.js';
+import { createNoopLogger } from './NoopLogger.js';
 
 interface EventSubscription {
   consumerId: string;
@@ -14,6 +16,7 @@ interface EventSubscription {
 export class ConfigurationService implements IConfigurationManager {
   private readonly adapter: IConfigurationAdapter;
   private readonly validator: ConfigValidator;
+  private readonly logger: ILogger;
   private currentSnapshot: ConfigurationSnapshot | null = null;
   private readonly snapshotHistory: Map<number, ConfigurationSnapshot> = new Map();
   private versionCounter = 0;
@@ -21,9 +24,10 @@ export class ConfigurationService implements IConfigurationManager {
   private isLoaded = false;
   private isReloading = false;
 
-  constructor(adapter?: IConfigurationAdapter) {
+  constructor(adapter?: IConfigurationAdapter, logger?: ILogger) {
     this.adapter = adapter ?? new FileConfigAdapter(['config/default.json', 'config/local.json'], { watch: true });
     this.validator = new ConfigValidator();
+    this.logger = logger ?? createNoopLogger();
   }
 
   async loadConfiguration(): Promise<Result<ConfigurationSnapshot, Error>> {
@@ -147,7 +151,7 @@ export class ConfigurationService implements IConfigurationManager {
     return Promise.resolve(ok({ valid: false, errors: [result.error.message] }));
   }
 
-  applyOverrides(changeSet: Record<string, unknown>, _requestedBy: string): Promise<Result<ConfigurationSnapshot, Error>> {
+  async applyOverrides(changeSet: Record<string, unknown>, _requestedBy: string): Promise<Result<ConfigurationSnapshot, Error>> {
     if (!this.currentSnapshot) {
       return Promise.resolve(err(new ConfigException(ConfigErrorCodes.CONFIG_NOT_FOUND, 'Configuration not loaded')));
     }
@@ -236,7 +240,7 @@ export class ConfigurationService implements IConfigurationManager {
 
   private async setupHotReload(): Promise<void> {
     if (!this.adapter.watch) {
-      console.warn('Hot reload not supported by adapter');
+      (this.logger.warn as (msg: string) => void)('Hot reload not supported by adapter');
       return;
     }
 
@@ -245,7 +249,7 @@ export class ConfigurationService implements IConfigurationManager {
     });
 
     if (watchResult.isErr()) {
-      console.warn('Hot reload setup failed:', watchResult.error.message);
+      (this.logger.warn as (msg: string, ctx: Record<string, unknown>) => void)('Hot reload setup failed', { error: watchResult.error.message });
     }
   }
 
@@ -271,7 +275,11 @@ export class ConfigurationService implements IConfigurationManager {
       try {
         subscription.callback(snapshot);
       } catch (error) {
-        console.error(`Failed to notify subscriber ${subscription.consumerId}:`, error);
+        (this.logger.error as (msg: string, ctx: Record<string, unknown>, err: Error) => void)(
+          'Failed to notify subscriber',
+          { consumerId: subscription.consumerId },
+          error instanceof Error ? error : new Error(String(error))
+        );
       }
     }
   }

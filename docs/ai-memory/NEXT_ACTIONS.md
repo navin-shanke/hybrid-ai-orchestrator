@@ -6,15 +6,15 @@
 
 ## 1. Upcoming Sprint Queue
 
-### Queue Position 1: Logger Module (Seq 2)
+### Queue Position 1: Event Bus Module (Seq 3)
 * **Sprint Phase**: Phase 1-10 (Contracts, Services, Output Adapters)
 * **Target Batch**: Batch 1
 * **Tasks**:
-  1. Create Logger interface `ILogger.ts`.
-  2. Define Logger levels and standard payload models.
-  3. Implement Logger service formatting outputs.
-  4. Implement console outputs writer in adapters.
-  5. Build Logger unit tests.
+  1. Create Event Bus interface `IEventBus.ts`.
+  2. Define Event Envelope and Event Catalog.
+  3. Implement In-Memory Event Bus `InMemoryEventBus.ts`.
+  4. Implement Console Event Adapter for logging.
+  5. Build Event Bus unit tests.
 
 ---
 
@@ -22,6 +22,7 @@
 - ✅ Shared Kernel (Entity, ValueObject, Result, BaseException, ErrorCodes, DateTime, Validation)
 - ✅ Configuration Manager Batch 1 (Contracts, Domain, Adapters)
 - ✅ Configuration Manager Batch 2 (Services, Hot-reload, Tests, Integration)
+- ✅ Logger Module Batch 1 (Contracts, Services, Adapters, Tests)
 
 ---
 

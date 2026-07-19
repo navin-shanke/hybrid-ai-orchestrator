@@ -5,9 +5,9 @@
 ---
 
 ## 1. Active Sprint Scope
-* **Target Module**: Configuration Manager (Seq 1)  
-* **Sprint Phase**: Phase 5-10 (Services and Integration)  
-* **Active Batch**: Batch 2  
+* **Target Module**: Logger Module (Seq 2)  
+* **Sprint Phase**: Phase 1-10 (Contracts, Services, Output Adapters)  
+* **Active Batch**: Batch 1  
 
 ---
 
@@ -15,11 +15,11 @@
 
 | Task ID | Task Description | Target File | Status | Pre-requisite |
 | --- | --- | --- | --- | --- |
-| **CM-2.1** | Create Configuration Service `ConfigurationService.ts` | `src/modules/configuration/services/ConfigurationService.ts` | ✅ Completed | Batch 1 |
-| **CM-2.2** | Integrate hot-reload and event publishing | `src/modules/configuration/services/ConfigurationService.ts` | ✅ Completed | Batch 1 |
-| **CM-2.3** | Create unit tests `Configuration.test.ts` | `tests/modules/configuration/Configuration.test.ts` | ✅ Completed | Batch 1 |
-| **CM-2.4** | Perform integration runs | N/A | ✅ Completed | Batch 1 |
-| **CM-2.5** | Documentation audit and review logs | `docs/ai-memory/REVIEW_HISTORY.md` | ✅ Completed | Batch 1 |
+| **LM-1.1** | Create Logger interface `ILogger.ts` | `src/modules/logger/contracts/ILogger.ts` | ✅ Completed | - |
+| **LM-1.2** | Define Log levels `LogLevels.ts` | `src/modules/logger/domain/LogLevels.ts` | ✅ Completed | - |
+| **LM-1.3** | Implement Logger service `LoggerService.ts` | `src/modules/logger/services/LoggerService.ts` | ✅ Completed | - |
+| **LM-1.4** | Implement Console adapter `ConsoleAdapter.ts` | `src/modules/logger/infrastructure/ConsoleAdapter.ts` | ✅ Completed | - |
+| **LM-1.5** | Create unit tests `Logger.test.ts` | `tests/modules/logger/Logger.test.ts` | ✅ Completed | - |
 
 ---
 
